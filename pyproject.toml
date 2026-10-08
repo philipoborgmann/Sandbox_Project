@@ -1,0 +1,50 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "quont-sandbox"
+version = "0.1.0"
+description = "Local-first quantitative research data foundation"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "numpy>=2.1,<3",
+    "pandas>=2.2,<3",
+    "pydantic>=2.10,<3",
+    "typer>=0.15,<1",
+    "sqlalchemy>=2.0,<3",
+    "alembic>=1.14,<2",
+    "psycopg[binary]>=3.2,<4",
+]
+
+[project.scripts]
+quont = "quont_sandbox.cli:app"
+
+[dependency-groups]
+dev = ["pytest>=8.3,<10", "ruff>=0.9,<1", "pyright>=1.1.390,<2"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/quont_sandbox"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pyright]
+pythonVersion = "3.12"
+typeCheckingMode = "strict"
+include = ["src", "tests", "migrations"]
+venvPath = "."
+venv = ".venv"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra -m 'not database and not live_provider'"
+markers = [
+    "database: opt-in PostgreSQL tests using QUONT_TEST_DATABASE_URL",
+    "live_provider: opt-in external provider tests",
+]

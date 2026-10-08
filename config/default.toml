@@ -1,0 +1,4 @@
+database_url = "postgresql+psycopg://localhost:5432/quont"
+raw_dir = "data/raw"
+cache_dir = "data/cache"
+exports_dir = "data/exports"
